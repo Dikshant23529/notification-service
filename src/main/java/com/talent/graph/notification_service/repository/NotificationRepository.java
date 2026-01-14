@@ -68,4 +68,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Stri
     // Statistics query
     @Query("SELECT n.status, COUNT(n) FROM Notification n WHERE n.createdAt >= :since GROUP BY n.status")
     List<Object[]> countNotificationsByStatusSince(@Param("since") LocalDateTime since);
+
+    Page<Notification> findByUserId(String userId);
+
+    List<Notification> findByUserIdAndStatus(String userId, NotificationStatus status);
 }
