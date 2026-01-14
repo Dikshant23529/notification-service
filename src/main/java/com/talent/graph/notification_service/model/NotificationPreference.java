@@ -1,8 +1,17 @@
 package com.talent.graph.notification_service.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class NotificationPreference {
     private String id;
     private String userId;
