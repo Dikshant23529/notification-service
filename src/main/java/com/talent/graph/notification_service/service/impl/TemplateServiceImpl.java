@@ -35,7 +35,7 @@ public class TemplateServiceImpl implements TemplateService {
         }
         
         NotificationTemplate template = templateMapper.toEntity(requestDTO);
-        template.setId(UUID.randomUUID().toString());
+        template.setId(UUID.randomUUID());
         template.setActive(true);
         
         NotificationTemplate savedTemplate = templateRepository.save(template);

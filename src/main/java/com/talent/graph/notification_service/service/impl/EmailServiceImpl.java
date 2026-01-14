@@ -86,7 +86,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean testConnection() {
         try {
-            mailSender.testConnection();
+            mailSender.createMimeMessage().getSession();
             log.info("Email server connection test successful");
             return true;
         } catch (Exception e) {

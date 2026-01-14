@@ -33,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationMapper notificationMapper;
     private final EmailService emailService;
     private final TemplateService templateService;
-    private final NotificationPreferenceService preferenceService;
+    private final NotificationPreferenceServiceImpl preferenceService;
     
     @Override
     @Transactional
@@ -44,7 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = notificationMapper.toEntity(requestDTO);
         
         // Set default values
-        notification.setId(UUID.randomUUID().toString());
+        notification.setId(UUID.randomUUID());
         notification.setStatus(NotificationStatus.PENDING);
         notification.setCreatedAt(LocalDateTime.now());
         
@@ -55,7 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
         // Send immediately if no scheduling
         if (savedNotification.getScheduledFor() == null || 
             savedNotification.getScheduledFor().isBefore(LocalDateTime.now())) {
-            sendNotificationAsync(savedNotification.getId());
+            sendNotificationAsync(savedNotification.getId().toString());
         }
         
         return notificationMapper.toResponseDTO(savedNotification);
@@ -74,14 +74,14 @@ public class NotificationServiceImpl implements NotificationService {
         
         // Process event and create notification
         Notification notification = notificationMapper.toEntity(eventDTO);
-        notification.setId(UUID.randomUUID().toString());
+        notification.setId(UUID.randomUUID());
         notification.setStatus(NotificationStatus.PENDING);
         notification.setCreatedAt(LocalDateTime.now());
         
         Notification savedNotification = notificationRepository.save(notification);
         
         // Send immediately
-        sendNotificationAsync(savedNotification.getId());
+        sendNotificationAsync(savedNotification.getId().toString());
         
         return notificationMapper.toResponseDTO(savedNotification);
     }
@@ -153,7 +153,7 @@ public class NotificationServiceImpl implements NotificationService {
         
         for (Notification notification : pendingNotifications) {
             try {
-                sendNotification(notification.getId());
+                sendNotification(notification.getId().toString());
             } catch (Exception e) {
                 log.error("Error processing notification {}: {}", notification.getId(), e.getMessage());
             }
@@ -177,7 +177,7 @@ public class NotificationServiceImpl implements NotificationService {
         for (Notification notification : failedNotifications) {
             notification.setStatus(NotificationStatus.PENDING);
             notificationRepository.save(notification);
-            sendNotificationAsync(notification.getId());
+            sendNotificationAsync(notification.getId().toString());
         }
     }
     
@@ -190,7 +190,7 @@ public class NotificationServiceImpl implements NotificationService {
     
     @Override
     public Page<NotificationResponseDTO> getNotificationsByUser(String userId, Pageable pageable) {
-        Page<Notification> notifications = notificationRepository.findByUserId((userId, pageable);
+        Page<Notification> notifications = notificationRepository.findByUserId(userId, pageable);
         return notifications.map(notificationMapper::toResponseDTO);
     }
     
@@ -278,7 +278,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean hasUnreadNotifications(String userId) {
         List<Notification> unread = notificationRepository
-                .findByUserIdAndStatus((userId, NotificationStatus.SENT);
+                .findByUserIdAndStatus(userId, NotificationStatus.SENT);
         return !unread.isEmpty();
     }
     
