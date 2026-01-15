@@ -1,26 +1,15 @@
 package com.talent.graph.notification_service.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
 @Table(name = "notification")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Notification {
 
     @Id
@@ -33,7 +22,7 @@ public class Notification {
     @Column(nullable = false)
     private String recipientEmail;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 200)
     private String subject;
 
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -43,36 +32,20 @@ public class Notification {
     @Column(nullable = false)
     private NotificationStatus status = NotificationStatus.PENDING;
 
-    @Enumerated(EnumType.STRING)
-    private NotificationPriority priority = NotificationPriority.MEDIUM;
-
-    private String referenceId;
-    private String resourceType;
-    private String eventType;
-    private String sourceService;
-
-    private Integer retryCount = 0;
     private String failureReason;
 
-    private LocalDateTime scheduledFor;
-    private LocalDateTime sentAt;
+    private LocalDateTime sendAt;
+
+    private String refrenceId;
+
+    private String resourceType;
+
+    private String eventType;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @CreationTimestamp
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        if (status == null) {
-            status = NotificationStatus.PENDING;
-        }
-        if (retryCount == null) {
-            retryCount = 0;
-        }
-        if (priority == null) {
-            priority = NotificationPriority.MEDIUM;
-        }
-    }
 }
