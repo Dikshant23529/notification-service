@@ -1,78 +1,43 @@
 package com.talent.graph.notification_service.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-@Entity
-@Table(name = "notification")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
+@Document 
+@Data
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
-    @Column(nullable = false)
+    @Indexed
+    @Field("user_id")
     private String userId;
 
-    @Column(nullable = false)
+    @Indexed
+    @Field("recipient_email")
     private String recipientEmail;
 
-    @Column(nullable = false, length = 500)
+    @Field("subject")
     private String subject;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String body;
+    @Field("notificationTemplateId")
+    private String notificationTemplateId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    private NotificationType notificationType = NotificationType.EMAIL;
+
+    @Field("status")
     private NotificationStatus status = NotificationStatus.PENDING;
 
-    @Enumerated(EnumType.STRING)
-    private NotificationPriority priority = NotificationPriority.MEDIUM;
+    @CreatedDate
+    @Field("event_initiated")
+    private LocalDateTime eventInitiated;
 
-    private String referenceId;
-    private String resourceType;
-    private String eventType;
-    private String sourceService;
-
-    private Integer retryCount = 0;
-    private String failureReason;
-
-    private LocalDateTime scheduledFor;
-    private LocalDateTime sentAt;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        if (status == null) {
-            status = NotificationStatus.PENDING;
-        }
-        if (retryCount == null) {
-            retryCount = 0;
-        }
-        if (priority == null) {
-            priority = NotificationPriority.MEDIUM;
-        }
-    }
 }

@@ -1,57 +1,33 @@
 package com.talent.graph.notification_service.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
-@Entity
-@Table(name = "notification_template")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Document(collation = "notifications")
+@Data
 public class NotificationTemplate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
-    @Column(nullable = false, unique = true)
+    @Indexed(unique = true)
     private String name;
 
     private String description;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String subjectTemplate;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String bodyTemplate;
 
-    private String category;
-    private String language = "en";
-
-    @ElementCollection
-    @CollectionTable(name = "template_variables",
-            joinColumns = @JoinColumn(name = "template_id"))
-    @MapKeyColumn(name = "variable_name")
-    @Column(name = "variable_description")
-    private Map<String, String> variables;
-
-    @Column(nullable = false)
-    private boolean isActive = true;
-
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 }
