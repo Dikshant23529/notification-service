@@ -1,12 +1,12 @@
-package com.talent.graph.notification_service.config;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
-
-@Configuration
-@EnableAsync
-@EnableScheduling
-public class AsyncConfig {
-    // Configuration for async and scheduled tasks
-}
+//package com.talent.graph.notification_service.config;
+//
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.scheduling.annotation.EnableAsync;
+//import org.springframework.scheduling.annotation.EnableScheduling;
+//
+//@Configuration
+//@EnableAsync
+//@EnableScheduling
+//public class AsyncConfig {
+//    // Configuration for async and scheduled tasks
+//}
