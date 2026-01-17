@@ -19,11 +19,11 @@ public interface NotificationTemplateRepository extends JpaRepository<Notificati
     // Find templates by category
     List<NotificationTemplate> findByCategory(String category);
     
-//    // Find templates by category and language
-//    Optional<NotificationTemplate> findByCategoryAndLanguage(String category, String language);
-//
-//    // Find templates by event type
-//    Optional<NotificationTemplate> findByEventTypeAndLanguage(String eventType, String language);
+    // Find templates by category and language
+    Optional<NotificationTemplate> findByCategoryAndLanguage(String category, String language);
+    
+    // Find templates by event type
+    Optional<NotificationTemplate> findByEventTypeAndLanguage(String eventType, String language);
     
     // Check if template name exists
     boolean existsByName(String name);
