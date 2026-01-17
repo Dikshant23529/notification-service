@@ -1,19 +1,52 @@
 package com.talent.graph.notification_service.model;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity
 public class NotificationLog {
-    private String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     private String notificationId;
+
+    @Column(nullable = false)
     private String userId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private NotificationType notificationType;
-    private String channel; // EMAIL, SMS, PUSH, INTERNAL
-    
-    private String action; // SENT, DELIVERED, READ, CLICKED, FAILED
+
+    @Column(nullable = false)
+    private String channel;
+
+    @Column(nullable = false)
+    private String action;
+
+    @Column(columnDefinition = "TEXT")
     private String details;
-    private String providerResponse; // Response from email/SMS provider
-    
+
+    @Column(columnDefinition = "TEXT")
+    private String providerResponse;
+
+    @CreationTimestamp
     private LocalDateTime timestamp;
-    private String ipAddress; // For tracking clicks
+
+    private String ipAddress;
     private String userAgent;
 }
