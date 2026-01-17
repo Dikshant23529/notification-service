@@ -3,16 +3,14 @@ package com.talent.graph.notification_service.model;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 
-@Document(collation = "notifications")
+@Document 
 @Data
 public class Notification {
 
@@ -30,39 +28,16 @@ public class Notification {
     @Field("subject")
     private String subject;
 
-    @Field("body")
-    private String body;
+    @Field("notificationTemplateId")
+    private String notificationTemplateId;
+
+    private NotificationType notificationType = NotificationType.EMAIL;
 
     @Field("status")
     private NotificationStatus status = NotificationStatus.PENDING;
 
-    @Field("retry_count")
-    private Integer retryCount = 0;
-
-    @Field("failure_reason")
-    private String failureReason;
-
-    @Field("send_at")
-    private LocalDateTime sendAt;
-
-    @Field("refrence_id")
-    private String refrenceId;
-
-    @Field("resource_type")
-    private String resourceType;
-
-    @Field("event_type")
-    private String eventType;
-
-    @Field("metadata")
-    private Map<String, Object> metadata;
-
     @CreatedDate
-    @Field("created_at")
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Field("updated_at")
-    private LocalDateTime updatedAt;
+    @Field("event_initiated")
+    private LocalDateTime eventInitiated;
 
 }

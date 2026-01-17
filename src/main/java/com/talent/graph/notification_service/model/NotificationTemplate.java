@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
 @Document(collation = "notifications")
 @Data
@@ -26,13 +24,6 @@ public class NotificationTemplate {
     private String subjectTemplate;
 
     private String bodyTemplate;
-
-    @Indexed
-    private String category;
-
-    private String eventType;
-
-    private Map<String, String> variables;
 
     @CreatedDate
     private LocalDateTime createdAt;
