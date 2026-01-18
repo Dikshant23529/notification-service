@@ -1,40 +1,39 @@
 package com.talent.graph.notification_service.util;
 
-import jakarta.mail.Message;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
+import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+@Configuration
 public class EmailUtil {
 
-   public static boolean sendEmail(
-        Session session,
-        String fromEmail,
-        String toEmail,
-        String subject,
-        String body,
-        boolean isHtml
-) {
-    try {
-        MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress(fromEmail));
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-        msg.setSubject(subject);
+    @Autowired
+    private Environment env;
 
-        if (isHtml) {
-            msg.setContent(body, "text/html; charset=UTF-8");
-        } else {
-            msg.setText(body);
-        }
+    public JavaMailSender javaMailSender() {
+        
+        JavaMailSenderImpl javaMailSenderImpl = new JavaMailSenderImpl();
+        javaMailSenderImpl.setHost(env.getProperty("spring.mail.host"));
+        javaMailSenderImpl.setPort(Integer.parseInt(env.getProperty("spring.mail.port")));
+        javaMailSenderImpl.setUsername(env.getProperty("spring.mail.username"));
+        javaMailSenderImpl.setPassword(env.getProperty("spring.mail.password"));
+        
 
-        Transport.send(msg);
-        return true;
+        Properties props = javaMailSenderImpl.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.timeout", "5000"); 
+        props.put("mail.debug", "false");
 
-    } catch (Exception e) {
-        // log properly
-        return false;
+        javaMailSenderImpl.setJavaMailProperties(props);
+
+        return javaMailSenderImpl;
+
     }
-}
 
 }

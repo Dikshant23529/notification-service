@@ -2,16 +2,11 @@ package com.talent.graph.notification_service.service.impl;
 
 import com.talent.graph.notification_service.model.Notification;
 import com.talent.graph.notification_service.model.NotificationStatus;
-import com.talent.graph.notification_service.repository.NotificationLogRepository;
 import com.talent.graph.notification_service.repository.NotificationRepository;
-import com.talent.graph.notification_service.repository.NotificationTemplateRepository;
 import com.talent.graph.notification_service.service.NotificationService;
-import com.talent.graph.notification_service.util.EmailUtil;
 
-import jakarta.mail.Session;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +18,6 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
  
     private NotificationRepository notificationRepository;
-
-    private NotificationTemplateRepository notificationTemplateRepository;
-
-    private NotificationLogRepository notificationLogRepository;
-
-    @Autowired
-    private Session emailSession;
 
     public Notification initiateNotification(String userId, String recipientEmail, String templateName) {
         Notification notification = new Notification();
@@ -61,13 +49,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void sendNotification(Notification notification) throws Exception {
+    public void sendNotification(Notification notification){
     
-        boolean sent = EmailUtil.sendEmail(emailSession,"12@gmail.com", notification.getRecipientEmail(), notification.getSubject(), notification.getNotificationTemplateId(),false);
-    
-    if (!sent) {
-        
-    }
 
     }
 
