@@ -7,6 +7,7 @@ import com.talent.graph.notification_service.service.NotificationService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,8 @@ public class NotificationServiceImpl implements NotificationService {
  
     private NotificationRepository notificationRepository;
 
+    
+
     public Notification initiateNotification(String userId, String recipientEmail, String templateName) {
         Notification notification = new Notification();
         notification.setUserId(userId);
@@ -26,7 +29,6 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setNotificationTemplateId(templateName);
         notification.setStatus(NotificationStatus.PENDING);
         notification.setEventInitiated(LocalDateTime.now());
-
         return notificationRepository.save(notification);
     }
 
@@ -51,6 +53,15 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void sendNotification(Notification notification){
     
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("dikshantlather0012@gmail.com");
+            mailMessage.setTo(notification.getRecipientEmail());
+            mailMessage.setSubject("Notification");
+            mailMessage.setText("This is a notification.");
+        } catch (Exception e) {
+            
+        }
 
     }
 
