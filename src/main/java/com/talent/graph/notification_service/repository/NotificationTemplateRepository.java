@@ -1,30 +1,28 @@
-//package com.talent.graph.notification_service.repository;
-//
-//import com.talent.graph.notification_service.model.NotificationTemplate;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.stereotype.Repository;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Repository
-//public interface NotificationTemplateRepository extends JpaRepository<NotificationTemplate, String> {
-//
-//    // Find template by name
-//    Optional<NotificationTemplate> findByName(String name);
-//
-//    // Find active templates
-//    List<NotificationTemplate> findByIsActiveTrue();
-//
-//    // Find templates by category
-//    List<NotificationTemplate> findByCategory(String category);
-//
-//    // Find templates by category and language
-//    Optional<NotificationTemplate> findByCategoryAndLanguage(String category, String language);
-//
-//    // Find templates by event type
-//    Optional<NotificationTemplate> findByEventTypeAndLanguage(String eventType, String language);
-//
-//    // Check if template name exists
-//    boolean existsByName(String name);
-//}
+package com.talent.graph.notification_service.repository;
+
+import com.talent.graph.notification_service.model.NotificationTemplate;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface NotificationTemplateRepository extends MongoRepository<NotificationTemplate, String> {
+
+    // Find template by name
+    Optional<NotificationTemplate> findByName(String name);
+
+    List<NotificationTemplate> findByNameContainingIgnoreCase(String keyword);
+
+    List<NotificationTemplate> findByDescriptionContainingIgnoreCase(String keyword);
+
+    @Query("{'$or': [{'name': {$regex: ?0, $options: 'i'}}, {'description': {$regex: ?0, $options: 'i'}}]}")
+    List<NotificationTemplate> searchTemplates(String searchTerm);
+
+    // Check if template name exists
+    boolean existsByName(String name);
+
+    List<NotificationTemplate> findAllByOrderByCreatedAtDesc();
+}
