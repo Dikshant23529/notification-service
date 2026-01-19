@@ -27,7 +27,7 @@ public class NotificationLog {
 
     private String responseMessage;
 
-    private String sender_service;
+    private String senderService;
 
     private String recipient;
 

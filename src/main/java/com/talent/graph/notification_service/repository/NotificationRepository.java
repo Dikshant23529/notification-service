@@ -27,7 +27,7 @@ public interface NotificationRepository extends MongoRepository<Notification, St
 
     List<Notification> findByUserIdAndStatus(String userId, NotificationStatus status);
 
-    List<Notification> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    List<Notification> findByEventInitiatedBetween(LocalDateTime start, LocalDateTime end);
 
 
     @Query("{'user_id': ?0, 'status': ?1}")
