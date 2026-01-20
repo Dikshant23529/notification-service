@@ -8,7 +8,7 @@ public interface NotificationService {
 
     public void processPendingNotifications();
 
-    public void sendNotification(Notification notification);
+    public void sendNotification();
 
     public void createNotificationLog(Notification notification, String responseMessage, boolean success);
 

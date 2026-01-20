@@ -7,7 +7,9 @@ import com.talent.graph.notification_service.service.NotificationService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,8 @@ public class NotificationServiceImpl implements NotificationService {
  
     private NotificationRepository notificationRepository;
 
-    
+    @Autowired
+    private JavaMailSender mailSender;
 
     public Notification initiateNotification(String userId, String recipientEmail, String templateName) {
         Notification notification = new Notification();
@@ -38,7 +41,7 @@ public class NotificationServiceImpl implements NotificationService {
         List<Notification> pendingNotifications = notificationRepository.findByStatus(NotificationStatus.PENDING);
         for (Notification notification : pendingNotifications) {
             try {
-                sendNotification(notification);
+                sendNotification();
                 notification.setStatus(NotificationStatus.SENT);
                 createNotificationLog(notification, "Notification sent successfully", true);
             } catch (Exception e) {
@@ -51,14 +54,17 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void sendNotification(Notification notification){
-    
+    public void sendNotification(){
+
+        Notification notification = new Notification();
+
         try {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("dikshantlather0012@gmail.com");
-            mailMessage.setTo(notification.getRecipientEmail());
+            mailMessage.setTo("latherdikshant0@gmail.com");
             mailMessage.setSubject("Notification");
             mailMessage.setText("This is a notification.");
+            mailSender.send(mailMessage);
         } catch (Exception e) {
             
         }
