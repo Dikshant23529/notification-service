@@ -19,7 +19,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class NotificationServiceImpl implements NotificationService {
- 
+
+    @Autowired
     private NotificationRepository notificationRepository;
 
     @Autowired
@@ -41,27 +42,23 @@ public class NotificationServiceImpl implements NotificationService {
         List<Notification> pendingNotifications = notificationRepository.findByStatus(NotificationStatus.PENDING);
         for (Notification notification : pendingNotifications) {
             try {
-                sendNotification();
+                sendNotification(notification);
                 notification.setStatus(NotificationStatus.SENT);
-                createNotificationLog(notification, "Notification sent successfully", true);
             } catch (Exception e) {
                 log.error("Failed to send notification: {}", e.getMessage());
                 notification.setStatus(NotificationStatus.FAILED);
-                createNotificationLog(notification, e.getMessage(), false);
             }
             notificationRepository.save(notification);
         }
     }
 
     @Override
-    public void sendNotification(){
-
-        Notification notification = new Notification();
+    public void sendNotification(Notification notification){
 
         try {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("dikshantlather0012@gmail.com");
-            mailMessage.setTo("latherdikshant0@gmail.com");
+            mailMessage.setTo(notification.getRecipientEmail());
             mailMessage.setSubject("Notification");
             mailMessage.setText("This is a notification.");
             mailSender.send(mailMessage);
