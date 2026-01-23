@@ -38,6 +38,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Transactional
     public void processPendingNotifications() {
+
+
+
         LocalDateTime now = LocalDateTime.now();
         List<Notification> pendingNotifications = notificationRepository.findByStatus(NotificationStatus.PENDING);
         for (Notification notification : pendingNotifications) {
