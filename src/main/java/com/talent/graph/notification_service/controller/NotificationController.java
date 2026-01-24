@@ -26,7 +26,7 @@ public class NotificationController {
     @PostMapping("/create")
     public ResponseEntity<String> createNotificationRecord(){
 
-        notificationService.initiateNotification(UUID.randomUUID().toString(), "lathe0@gmail.com", "1234");
+        notificationService.initiateNotification(UUID.randomUUID().toString(), "latherdikshant0@gmail.com", "1234");
 
         return ResponseEntity.ok("api called");
 
