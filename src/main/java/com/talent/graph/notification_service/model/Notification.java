@@ -40,4 +40,10 @@ public class Notification {
     @Field("event_initiated")
     private LocalDateTime eventInitiated;
 
+    private Integer retryCount = 0;
+
+    private LocalDateTime eventProcessed;
+
+    private String remarks;
+
 }
