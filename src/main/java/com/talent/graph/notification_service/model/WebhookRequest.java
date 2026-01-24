@@ -1,6 +1,8 @@
 package com.talent.graph.notification_service.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,6 +10,8 @@ import java.util.Map;
 
 @Document
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class WebhookRequest {
 
     @Id
