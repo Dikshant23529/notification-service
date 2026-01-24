@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/notification")
+@Deprecated
 public class NotificationController {
 
     @Autowired

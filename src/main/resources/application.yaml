@@ -2,6 +2,15 @@ spring:
   application:
     name: NOTIFICATION-SERVICE
 
+#    Async Processing code
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 20
+        queue-capacity: 100
+      thread-name-prefix: webhook-thread-
+
   data:
     mongodb:
       uri: mongodb://localhost:27017/notification_service

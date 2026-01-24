@@ -19,6 +19,8 @@ public class WebhookRequest {
 
     private String eventType = "login_event";
 
+    private String email;
+
     private String timeStamp;
 
     private String service;

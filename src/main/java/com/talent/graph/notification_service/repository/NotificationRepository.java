@@ -23,7 +23,6 @@ public interface NotificationRepository extends MongoRepository<Notification, St
     List<Notification> findByRecipientEmail(String recipientEmail);
    
 
-    List<Notification> findByStatus(NotificationStatus status);
 
     List<Notification> findByUserIdAndStatus(String userId, NotificationStatus status);
 
@@ -32,5 +31,16 @@ public interface NotificationRepository extends MongoRepository<Notification, St
 
     @Query("{'user_id': ?0, 'status': ?1}")
     List<Notification> findUserNotificationsByStatus(String userId, NotificationStatus status);
+
+
+    List<Notification> findByStatus(NotificationStatus status);
+
+    // New methods for scheduler
+    List<Notification> findByStatusAndRetryCountLessThan(NotificationStatus status, Integer maxRetries);
+
+    List<Notification> findByStatusAndEventProcessedBefore(NotificationStatus status, LocalDateTime date);
+
+    List<Notification> findByStatusAndRetryCountGreaterThanEqualAndEventProcessedBefore(
+            NotificationStatus status, Integer minRetries, LocalDateTime date);
 
 }
