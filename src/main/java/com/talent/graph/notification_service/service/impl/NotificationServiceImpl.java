@@ -2,6 +2,7 @@ package com.talent.graph.notification_service.service.impl;
 
 import com.talent.graph.notification_service.model.Notification;
 import com.talent.graph.notification_service.model.NotificationStatus;
+import com.talent.graph.notification_service.model.WebhookRequest;
 import com.talent.graph.notification_service.repository.NotificationRepository;
 import com.talent.graph.notification_service.service.NotificationService;
 
@@ -38,9 +39,6 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Transactional
     public void processPendingNotifications() {
-
-
-
         LocalDateTime now = LocalDateTime.now();
         List<Notification> pendingNotifications = notificationRepository.findByStatus(NotificationStatus.PENDING);
         for (Notification notification : pendingNotifications) {
@@ -55,12 +53,13 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
+    @Deprecated
     @Override
     public void sendNotification(Notification notification){
 
         try {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom("dikshantlather0012@gmail.com");
+            mailMessage.setFrom("notfication@gmail.com");
             mailMessage.setTo(notification.getRecipientEmail());
             mailMessage.setSubject("Notification");
             mailMessage.setText("This is a notification.");
@@ -69,6 +68,19 @@ public class NotificationServiceImpl implements NotificationService {
             
         }
 
+    }
+
+    public void sendNotfication(WebhookRequest webhookRequest){
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("dikshantlather0012@gmail.com");
+            mailMessage.setTo(webhookRequest.getEmail());
+            mailMessage.setSubject("Notification");
+            mailMessage.setText("This is a notification.");
+            mailSender.send(mailMessage);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
