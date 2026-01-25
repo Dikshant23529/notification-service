@@ -5,7 +5,6 @@ import com.talent.graph.notification_service.model.WebhookResponse;
 import com.talent.graph.notification_service.service.impl.NotificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +16,13 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/webhooks")
+@RequestMapping("/api/v1/webhook")
 @RequiredArgsConstructor
-public class NotficationWebhookController {
+public class NotificationWebhookController {
 
-    @Autowired
-    private NotificationServiceImpl notificationService;
+    private final NotificationServiceImpl notificationService;
 
-    private List<WebhookRequest> receivedPayloads = Collections.synchronizedList(new ArrayList<>());
+    private final List<WebhookRequest> receivedPayloads = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * FIX 1: Add @PostMapping annotation
