@@ -36,6 +36,8 @@ public class Notification {
     @Field("status")
     private NotificationStatus status = NotificationStatus.PENDING;
 
+    private NotificationPriority notificationPriority = NotificationPriority.LOW;
+
     @CreatedDate
     @Field("event_initiated")
     private LocalDateTime eventInitiated;
